@@ -1,12 +1,10 @@
-import { useEffect, useState, ReactNode } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState, PropsWithChildren, FC } from "react";
 import { Stack, useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
+import { AuthProvider } from "../context/AuthContext";
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-const RootLayout = ({ children }: LayoutProps) => {
+const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   const [hasFirstLaunch, setHasFirstLaunch] = useState<boolean | null>(null);
   const router = useRouter();
 
@@ -30,7 +28,14 @@ const RootLayout = ({ children }: LayoutProps) => {
     return null;
   }
 
-  return <Stack>{children}</Stack>;
+  return (
+    <>
+      <AuthProvider>
+        <StatusBar style="dark" />
+        <Stack>{children}</Stack>
+      </AuthProvider>
+    </>
+  );
 };
 
 export default RootLayout;
