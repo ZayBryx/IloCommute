@@ -1,11 +1,10 @@
-import { StyleSheet, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, Text, View } from "react-native";
 
 const route = () => {
   return (
-    <SafeAreaView>
+    <View>
       <Text>Route</Text>
-    </SafeAreaView>
+    </View>
   );
 };
 

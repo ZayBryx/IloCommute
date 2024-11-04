@@ -3,6 +3,7 @@ import { Stack, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "../context/AuthContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const RootLayout = () => {
   const [hasFirstLaunch, setHasFirstLaunch] = useState<boolean | null>(null);
@@ -31,12 +32,14 @@ const RootLayout = () => {
   return (
     <>
       <AuthProvider>
-        <StatusBar style="dark" />
-        <Stack>
-          <Stack.Screen name="guest" />
-          <Stack.Screen name="index" />
-          <Stack.Screen name="user" />
-        </Stack>
+        <GestureHandlerRootView>
+          <StatusBar style="dark" />
+          <Stack>
+            <Stack.Screen name="guest" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="user" options={{ headerShown: false }} />
+          </Stack>
+        </GestureHandlerRootView>
       </AuthProvider>
     </>
   );

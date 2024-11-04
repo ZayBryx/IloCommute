@@ -45,7 +45,6 @@ const Guest: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
       <View style={styles.backgroundShapes}>
         <View style={[styles.circle, styles.circleTop]} />
         <View style={[styles.circle, styles.circleBottom]} />
@@ -110,6 +109,7 @@ const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     backgroundColor: "#f0f4f8",
+    marginTop: StatusBar.currentHeight,
   },
   backgroundShapes: {
     ...StyleSheet.absoluteFillObject,
@@ -160,8 +160,13 @@ const styles = StyleSheet.create<Styles>({
     marginBottom: 32,
   },
   input: {
-    width: "100%",
-    marginBottom: 20,
+    height: 40,
+    borderColor: "#e0e0e0",
+    borderWidth: 1,
+    borderRadius: 4,
+    width: 350,
+    paddingHorizontal: 10,
+    backgroundColor: "#fff",
   },
   loginButton: {
     backgroundColor: "#0037a4",

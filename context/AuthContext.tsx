@@ -4,10 +4,20 @@ import {
   useContext,
   useState,
   PropsWithChildren,
+  useEffect,
 } from "react";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { GUEST_TOKEN, API_URL } from "@env";
+import { jwtDecode } from "jwt-decode";
+import { router } from "expo-router";
+import { GUEST_TOKEN, API_URL, USER_TOKEN } from "@env";
+
+interface JWTpayload {
+  exp: number;
+  name: string;
+  role: string;
+  userId: string;
+}
 
 interface AuthData {
   isAuth: boolean;
@@ -24,10 +34,12 @@ interface Error {
 }
 
 interface AuthContextType {
+  authData: AuthData;
   guestLogin: (
     name: string
   ) => Promise<{ error?: boolean; code?: any; message?: any } | void>;
-  authData: AuthData;
+  logout: () => Promise<void>;
+  checkAuth: () => Promise<void>;
 }
 
 axios.defaults.baseURL = API_URL;
@@ -44,6 +56,33 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
+  // validates if user is logged in or not
+  const checkAuth = async () => {
+    const guest_token = await SecureStore.getItemAsync(GUEST_TOKEN);
+
+    const currentDate = new Date();
+
+    if (guest_token) {
+      const decoded = jwtDecode<JWTpayload>(guest_token);
+
+      if (decoded.exp * 1000 < currentDate.getTime()) {
+        setAuthData({ isAuth: false, user: undefined });
+        await SecureStore.deleteItemAsync(GUEST_TOKEN);
+        axios.defaults.headers.common.Authorization = "";
+        return;
+      }
+
+      setAuthData({
+        isAuth: true,
+        user: { name: decoded.name, id: decoded.userId },
+      });
+
+      axios.defaults.headers.common.Authorization = `Bearer ${guest_token}`;
+      router.replace("/user");
+    }
+  };
+
+  // guest login
   const guestLogin = async (name: string) => {
     setLoading(true);
     try {
@@ -72,8 +111,37 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  // logout for guest and user
+  const logout = async () => {
+    setLoading(true);
+    try {
+      const userToken = await SecureStore.getItemAsync(USER_TOKEN);
+      const guestToken = await SecureStore.getItemAsync(GUEST_TOKEN);
+
+      if (guestToken) {
+        await SecureStore.deleteItemAsync(GUEST_TOKEN);
+      }
+
+      setAuthData({
+        isAuth: false,
+        user: undefined,
+      });
+
+      await axios.delete("/auth/sign-out");
+      axios.defaults.headers.common.Authorization = "";
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ guestLogin, authData }}>
+    <AuthContext.Provider value={{ guestLogin, authData, logout, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );
