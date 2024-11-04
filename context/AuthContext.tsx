@@ -23,10 +23,19 @@ interface Error {
   message?: string;
 }
 
+interface AuthContextType {
+  guestLogin: (
+    name: string
+  ) => Promise<{ error?: boolean; code?: any; message?: any } | void>;
+  authData: AuthData;
+}
+
 axios.defaults.baseURL = API_URL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const AuthContext = createContext({});
+export const AuthContext = createContext<AuthContextType>(
+  {} as AuthContextType
+);
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [authData, setAuthData] = useState<AuthData>({
@@ -64,7 +73,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ guestLogin }}>
+    <AuthContext.Provider value={{ guestLogin, authData }}>
       {children}
     </AuthContext.Provider>
   );

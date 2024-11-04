@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "../context/AuthContext";
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => {
+const RootLayout = () => {
   const [hasFirstLaunch, setHasFirstLaunch] = useState<boolean | null>(null);
   const router = useRouter();
 
@@ -32,7 +32,11 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
     <>
       <AuthProvider>
         <StatusBar style="dark" />
-        <Stack>{children}</Stack>
+        <Stack>
+          <Stack.Screen name="guest" />
+          <Stack.Screen name="index" />
+          <Stack.Screen name="user" />
+        </Stack>
       </AuthProvider>
     </>
   );
