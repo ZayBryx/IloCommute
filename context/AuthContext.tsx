@@ -10,7 +10,13 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { jwtDecode } from "jwt-decode";
 import { router } from "expo-router";
-import { GUEST_TOKEN, API_URL, USER_TOKEN } from "@env";
+import {
+  GUEST_TOKEN,
+  API_URL,
+  USER_TOKEN,
+  WEB_CLIENT_ID,
+  IOS_CLIENT_ID,
+} from "@env";
 
 interface JWTpayload {
   exp: number;
@@ -136,6 +142,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
       await axios.delete("/auth/sign-out");
       axios.defaults.headers.common.Authorization = "";
+      router.push("/login");
     } catch (error) {
       console.error(error);
     } finally {
