@@ -1,7 +1,7 @@
-import { StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
 import DrawerComponents from "../../../components/DrawerComponents";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 
 const DrawerRootLayout = () => {
   return (
@@ -10,7 +10,7 @@ const DrawerRootLayout = () => {
         drawerContent={DrawerComponents}
         screenOptions={{
           drawerStyle: {
-            width: "75%", // Adjust drawer width
+            width: "75%",
           },
           headerShown: true,
           headerStyle: {
@@ -21,13 +21,21 @@ const DrawerRootLayout = () => {
         <Drawer.Screen
           name="index"
           options={{
-            headerTitle: "Home",
+            headerTitle: "Find",
+            title: "Find",
+            drawerIcon: ({ color, size }) => (
+              <Entypo name="location-pin" size={size} color={color} />
+            ),
           }}
         />
         <Drawer.Screen
           name="route"
           options={{
             headerTitle: "Route",
+            title: "Route",
+            drawerIcon: ({ color, size }) => (
+              <MaterialIcons name="route" size={size} color={color} />
+            ),
           }}
         />
       </Drawer>
@@ -36,5 +44,3 @@ const DrawerRootLayout = () => {
 };
 
 export default DrawerRootLayout;
-
-const styles = StyleSheet.create({});
