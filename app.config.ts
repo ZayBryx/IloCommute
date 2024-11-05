@@ -35,6 +35,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     [
+      "@react-native-google-signin/google-signin",
+      {
+        iosUrlScheme:
+          "com.googleusercontent.apps.14602739192-o6soodmt2q4ukds98ft947rpnabgl6hq",
+      },
+    ],
+    [
       "expo-secure-store",
       {
         faceIDPermission:
