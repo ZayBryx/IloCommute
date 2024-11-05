@@ -35,6 +35,7 @@ interface Error {
 
 interface AuthContextType {
   authData: AuthData;
+  loading: boolean;
   guestLogin: (
     name: string
   ) => Promise<{ error?: boolean; code?: any; message?: any } | void>;
@@ -58,27 +59,33 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // validates if user is logged in or not
   const checkAuth = async () => {
-    const guest_token = await SecureStore.getItemAsync(GUEST_TOKEN);
+    try {
+      setLoading(true);
+      const guest_token = await SecureStore.getItemAsync(GUEST_TOKEN);
 
-    const currentDate = new Date();
+      const currentDate = new Date();
 
-    if (guest_token) {
-      const decoded = jwtDecode<JWTpayload>(guest_token);
+      if (guest_token) {
+        const decoded = jwtDecode<JWTpayload>(guest_token);
 
-      if (decoded.exp * 1000 < currentDate.getTime()) {
-        setAuthData({ isAuth: false, user: undefined });
-        await SecureStore.deleteItemAsync(GUEST_TOKEN);
-        axios.defaults.headers.common.Authorization = "";
-        return;
+        if (decoded.exp * 1000 < currentDate.getTime()) {
+          setAuthData({ isAuth: false, user: undefined });
+          await SecureStore.deleteItemAsync(GUEST_TOKEN);
+          axios.defaults.headers.common.Authorization = "";
+          return;
+        }
+
+        setAuthData({
+          isAuth: true,
+          user: { name: decoded.name, id: decoded.userId },
+        });
+
+        axios.defaults.headers.common.Authorization = `Bearer ${guest_token}`;
       }
-
-      setAuthData({
-        isAuth: true,
-        user: { name: decoded.name, id: decoded.userId },
-      });
-
-      axios.defaults.headers.common.Authorization = `Bearer ${guest_token}`;
-      router.replace("/user");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -141,7 +148,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ guestLogin, authData, logout, checkAuth }}>
+    <AuthContext.Provider
+      value={{ guestLogin, authData, logout, checkAuth, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );
