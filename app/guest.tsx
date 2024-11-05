@@ -75,7 +75,7 @@ const Guest: React.FC = () => {
         </View>
 
         <TouchableOpacity style={styles.backButton}>
-          <Link style={styles.backButtonText} href="/">
+          <Link style={styles.backButtonText} href="/login">
             Back to Home
           </Link>
         </TouchableOpacity>
