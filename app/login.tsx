@@ -11,6 +11,7 @@ import {
   StatusBar,
 } from "react-native";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import { FontAwesome } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
@@ -36,6 +37,7 @@ export default function login() {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.signInButton} onPress={login}>
               <View style={styles.googleButtonContent}>
+                <FontAwesome name="google" size={24} color="#ffffff" />
                 <Text style={styles.signInButtonText}>Sign in with Google</Text>
               </View>
             </TouchableOpacity>
