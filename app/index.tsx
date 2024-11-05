@@ -1,36 +1,49 @@
-import { Link } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { useAuth } from "@/context/AuthContext";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Page() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello World </Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
-        <Link href="/guest">Login as Guest</Link>
-      </View>
-    </View>
-  );
-}
+  const { authData, loading } = useAuth();
+  const [checkingFirstLaunch, setCheckingFirstLaunch] = useState(true);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
-  },
-});
+  const checkIfFirstLaunch = async () => {
+    try {
+      const isLaunch = await AsyncStorage.getItem("has_launched");
+
+      if (!isLaunch) {
+        await AsyncStorage.setItem("has_launched", "true");
+        router.replace("/(introduction)");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error checking first launch:", error);
+      return false;
+    } finally {
+      setCheckingFirstLaunch(false);
+    }
+  };
+
+  const handleRedirects = async () => {
+    const isFirstLaunch = await checkIfFirstLaunch();
+
+    if (!isFirstLaunch && !loading) {
+      if (!authData.isAuth) {
+        router.push("/login");
+      } else {
+        router.push("/user");
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleRedirects();
+  }, [loading, authData.isAuth]);
+
+  if (checkingFirstLaunch || loading) {
+    return null;
+  }
+
+  return null;
+}
