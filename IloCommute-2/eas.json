@@ -1,0 +1,31 @@
+{
+  "cli": {
+    "version": ">= 13.0.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "GUEST_TOKEN": "GUEST_TOKEN",
+        "USER_TOKEN": "USER_TOKEN",
+        "API_URL": "https://ilocommute-api.onrender.com/api/v1",
+        "GOOGLE_MAPS_API_KEY": "AIzaSyABvawFdNuvYQQ_CguQooLkU1lwABiJY88",
+        "GOOGLE_API_KEY": "AIzaSyChRzujMeVGoBIGTCqpYNLLlqyFWqz7MNk",
+        "GOOGLE_API_KEY_3": "AIzaSyD8U1zwRnBBxxGVHmmWEC6VaR1Xam5nsMs",
+        "WEB_CLIENT_ID": "14602739192-hl96ckr94dieodfrudh2caq5vg56uepj.apps.googleusercontent.com",
+        "IOS_CLIENT_ID": "14602739192-o6soodmt2q4ukds98ft947rpnabgl6hq.apps.googleusercontent.com"
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

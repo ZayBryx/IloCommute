@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+Ilocommute-frontend/node_modules/
+IloCommute-2/node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+web-build/
+Ilocommute-frontend/dist/
+IloCommute-2/dist/
+
+# Expo
+.expo/
+IloCommute-2/.expo/
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+/IloCommute-2/android
+/IloCommute-2/ios
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment files
+.env
+.env*.local
+*.local
+
+# Typescript
+*.tsbuildinfo

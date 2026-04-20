@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "IloCommute",
+    "slug": "IloCommute",
+    "scheme": "ilocommute",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#ffffff",
+      "resizeMode": "cover",
+      "dark": {
+        "image": "./assets/splash.png",
+        "backgroundColor": "#000000"
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.ilocommute.com"
+    },
+    "android": {
+      "package": "app.ilocommute.com",
+      "config": {
+        "googleMaps": {
+          "apiKey": "[GCP_API_KEY]"
+        }
+      },
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(Ilocommute) to use your location."
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.14602739192-o6soodmt2q4ukds98ft947rpnabgl6hq"
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Allow $(Ilocommute) to access your Face ID biometric data."
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1cfe3386-9020-415b-8d4c-5470b5d42f81"
+      }
+    },
+    "owner": "zybryx"
+  }
+}
